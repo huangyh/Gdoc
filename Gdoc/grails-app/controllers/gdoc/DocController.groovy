@@ -14,8 +14,6 @@ class DocController {
         params.max = Math.min(max ?: 10, 100)
         [docInstanceList: Doc.list(params), docInstanceTotal: Doc.count()]
     }
-	
-	
 
     def create() {
         [docInstance: new Doc(params)]

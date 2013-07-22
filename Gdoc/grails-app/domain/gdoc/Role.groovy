@@ -11,7 +11,7 @@ class Role {
 	static hasMany = [users:User]
 
     static constraints = {
-		name()
+		name(balnk:false)
 		description()
     }
 }

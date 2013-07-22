@@ -19,7 +19,7 @@ class User {
     static constraints = {
 		userId(blank:false,unique:true)
 		username(blank:false)
-		password(blank:false)
+		password(blank:false,password:true)
 		email(blank:false,email:true)
 		phone()
 		orgs()

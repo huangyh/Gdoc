@@ -13,7 +13,7 @@ class Org {
 	static hasMany = [depts:Dept]
 
     static constraints = {
-		name()
+		name(blank:false)
 		address()
 		zip()
 		code()

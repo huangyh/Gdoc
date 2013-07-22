@@ -19,17 +19,19 @@ class Doc {
 	}
 	
 	static belongsTo =[categorys:Category]
+	
+	static mapping = { filedata( type: 'materialized_blob' ) }
 
     static constraints = {
-	    name(nullable:true)
-		description(nullable:true)
-		orgs(nullable:true)
-		depts(nullable:true)
-		username(nullable:true)
-		roles(nullable:true)
-		share(inList:["私有","本部门","本单位","本系统","所有人"])
-		fileName(nullable:true)
-		filedata(nullable:true)
+	    name(balnk:false)
+		description()
+		orgs()
+		depts()
+		username()
+		roles()
+		share(inList:["私有","本部门","本单位","本系统","所有人"],blank:false)
+		fileName()
+		filedata()
 		dateCreated()
 		
 		

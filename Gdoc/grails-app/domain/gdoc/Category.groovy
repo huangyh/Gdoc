@@ -11,7 +11,7 @@ class Category {
 	static hasMany = [docs:Doc]
 
     static constraints = {
-		name()
+		name(balnk:false)
 		description()
     }
 }
