@@ -17,6 +17,7 @@ class DocController {
 
     def create() {
         [docInstance: new Doc(params)]
+		
     }
 
     def save() {

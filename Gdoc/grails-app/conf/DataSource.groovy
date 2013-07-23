@@ -2,7 +2,7 @@ dataSource {
     pooled = true
     driverClassName = "com.mysql.jdbc.Driver"  
     username = "root"
-    password = "123456"
+    password = ""
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -14,19 +14,19 @@ environments {
     development {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url ="jdbc:mysql://localhost:3306/devDB?useUnicode=true&characterEncoding=UTF-8"  
+            url ="jdbc:mysql://localhost:3306/devDOC?useUnicode=true&characterEncoding=UTF-8"  
         }
     }
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://localhost:3306/testDB?useUnicode=true&characterEncoding=UTF-8"  
+            url = "jdbc:mysql://localhost:3306/testDOC?useUnicode=true&characterEncoding=UTF-8"  
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://localhost:3306/prodDB?useUnicode=true&characterEncoding=UTF-8"  
+            url = "jdbc:mysql://localhost:3306/prodDOC?useUnicode=true&characterEncoding=UTF-8"  
             
             pooled = true
             properties {

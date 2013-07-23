@@ -29,7 +29,7 @@ class Doc {
 		depts()
 		username()
 		roles()
-		share(inList:["私有","本部门","本单位","本系统","所有人"],blank:false)
+		share(inList:["私有","本部门 ","本单位","本系统","公开"],blank:false)
 		fileName()
 		filedata()
 		dateCreated()
