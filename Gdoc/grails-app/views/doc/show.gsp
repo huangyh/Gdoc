@@ -32,6 +32,49 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${docInstance?.categorys}">
+				<li class="fieldcontain">
+					<span id="categorys-label" class="property-label"><g:message code="doc.categorys.label" default="Categorys" /></span>
+					
+						<span class="property-value" aria-labelledby="categorys-label"><g:fieldValue bean="${docInstance}" field="categorys"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${docInstance?.share}">
+				<li class="fieldcontain">
+					<span id="share-label" class="property-label"><g:message code="doc.share.label" default="Share" /></span>
+					
+						<span class="property-value" aria-labelledby="share-label"><g:fieldValue bean="${docInstance}" field="share"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${docInstance?.fileName}">
+				<li class="fieldcontain">
+					<span id="fileName-label" class="property-label"><g:message code="doc.fileName.label" default="File Name" /></span>
+					
+						<span class="property-value" aria-labelledby="fileName-label"><g:fieldValue bean="${docInstance}" field="fileName"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${docInstance?.filedata}">
+				<li class="fieldcontain">
+					<span id="filedata-label" class="property-label"><g:message code="doc.filedata.label" default="Filedata" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${docInstance?.dateCreated}">
+				<li class="fieldcontain">
+					<span id="dateCreated-label" class="property-label"><g:message code="doc.dateCreated.label" default="Date Created" /></span>
+					
+						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${docInstance?.dateCreated}" /></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${docInstance?.description}">
 				<li class="fieldcontain">
 					<span id="description-label" class="property-label"><g:message code="doc.description.label" default="Description" /></span>
@@ -73,49 +116,6 @@
 					<span id="roles-label" class="property-label"><g:message code="doc.roles.label" default="Roles" /></span>
 					
 						<span class="property-value" aria-labelledby="roles-label"><g:fieldValue bean="${docInstance}" field="roles"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${docInstance?.share}">
-				<li class="fieldcontain">
-					<span id="share-label" class="property-label"><g:message code="doc.share.label" default="Share" /></span>
-					
-						<span class="property-value" aria-labelledby="share-label"><g:fieldValue bean="${docInstance}" field="share"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${docInstance?.fileName}">
-				<li class="fieldcontain">
-					<span id="fileName-label" class="property-label"><g:message code="doc.fileName.label" default="File Name" /></span>
-					
-						<span class="property-value" aria-labelledby="fileName-label"><g:fieldValue bean="${docInstance}" field="fileName"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${docInstance?.filedata}">
-				<li class="fieldcontain">
-					<span id="filedata-label" class="property-label"><g:message code="doc.filedata.label" default="Filedata" /></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${docInstance?.dateCreated}">
-				<li class="fieldcontain">
-					<span id="dateCreated-label" class="property-label"><g:message code="doc.dateCreated.label" default="Date Created" /></span>
-					
-						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${docInstance?.dateCreated}" /></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${docInstance?.categorys}">
-				<li class="fieldcontain">
-					<span id="categorys-label" class="property-label"><g:message code="doc.categorys.label" default="Categorys" /></span>
-					
-						<span class="property-value" aria-labelledby="categorys-label"><g:link controller="category" action="show" id="${docInstance?.categorys?.id}">${docInstance?.categorys?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

@@ -2,12 +2,44 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'name', 'error')} ">
+<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'name', 'error')} required">
 	<label for="name">
 		<g:message code="doc.name.label" default="Name" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:textField name="name" required="" value="${docInstance?.name}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'categorys', 'error')} required">
+	<label for="categorys">
+		<g:message code="doc.categorys.label" default="Categorys" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select name="categorys" from="${docInstance.constraints.categorys.inList}" required="" value="${docInstance?.categorys}" valueMessagePrefix="doc.categorys"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'share', 'error')} required">
+	<label for="share">
+		<g:message code="doc.share.label" default="Share" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select name="share" from="${docInstance.constraints.share.inList}" required="" value="${docInstance?.share}" valueMessagePrefix="doc.share"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'fileName', 'error')} ">
+	<label for="fileName">
+		<g:message code="doc.fileName.label" default="File Name" />
 		
 	</label>
-	<g:textField name="name" value="${docInstance?.name}"/>
+	<g:textField name="fileName" value="${docInstance?.fileName}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'filedata', 'error')} required">
+	<label for="filedata">
+		<g:message code="doc.filedata.label" default="Filedata" />
+		<span class="required-indicator">*</span>
+	</label>
+	<input type="file" id="filedata" name="filedata" />
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: docInstance, field: 'description', 'error')} ">
@@ -23,7 +55,7 @@
 		<g:message code="doc.orgs.label" default="Orgs" />
 		
 	</label>
-	<g:textField name="orgs" value="${docInstance?.orgs}"/>
+	<g:textField name="orgs" value="${docInstance?.orgs}" readonly="true"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: docInstance, field: 'depts', 'error')} ">
@@ -48,37 +80,5 @@
 		
 	</label>
 	<g:textField name="roles" value="${docInstance?.roles}"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'share', 'error')} ">
-	<label for="share">
-		<g:message code="doc.share.label" default="Share" />
-		
-	</label>
-	<g:select name="share" from="${docInstance.constraints.share.inList}" value="${docInstance?.share}" valueMessagePrefix="doc.share" noSelection="['': '']"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'fileName', 'error')} ">
-	<label for="fileName">
-		<g:message code="doc.fileName.label" default="File Name" />
-		
-	</label>
-	<g:textField name="fileName" value="${docInstance?.fileName}"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'filedata', 'error')} ">
-	<label for="filedata">
-		<g:message code="doc.filedata.label" default="Filedata" />
-		
-	</label>
-	<input type="file" id="filedata" name="filedata" />
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: docInstance, field: 'categorys', 'error')} required">
-	<label for="categorys">
-		<g:message code="doc.categorys.label" default="Categorys" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="categorys" name="categorys.id" from="${gdoc.Category.list()}" optionKey="id" required="" value="${docInstance?.categorys?.id}" class="many-to-one"/>
 </div>
 

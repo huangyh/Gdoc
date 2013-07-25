@@ -8,7 +8,6 @@ class Category {
 		"${name}"
 	}
 	
-	static hasMany = [docs:Doc]
 
     static constraints = {
 		name(balnk:false)

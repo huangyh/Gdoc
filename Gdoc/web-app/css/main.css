@@ -594,3 +594,8 @@ a.skip {
 	position: absolute;
 	left: -9999px;
 }
+
+#main_login {
+	float:right;
+	margin:30px;
+}

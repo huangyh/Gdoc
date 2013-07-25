@@ -8,7 +8,6 @@ class Role {
 		"${name}"
 	}
 	
-	static hasMany = [users:User]
 
     static constraints = {
 		name(balnk:false)

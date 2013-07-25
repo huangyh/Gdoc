@@ -9,6 +9,30 @@ class UserController {
     def index() {
         redirect(action: "list", params: params)
     }
+	
+	def login = {}
+	
+	def logout = {
+		flash.message = "再见， ${session.user.username}"
+		session.user = null
+		redirect(action:"login")
+	}
+	
+	def authenticate = {
+		def user = User.findByUserIdAndPassword(params.userId, params.password)
+		if(user){
+		session.user = user
+		flash.message = "您好！ ${user.username}!"
+		if (user.admin){
+		redirect(controller:"user",action:"list")
+		}else{
+		redirect(controller:"doc", action:"list")
+		}
+		}else{
+		flash.message = "对不起, ${params.userId}. 请再试一次。"
+		redirect(action:"login")
+		}
+	}
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)

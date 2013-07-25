@@ -23,7 +23,7 @@
 		<g:message code="user.password.label" default="Password" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="password" required="" value="${userInstance?.password}"/>
+	<g:field type="password" name="password" required="" value="${userInstance?.password}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'email', 'error')} required">
@@ -63,6 +63,6 @@
 		<g:message code="user.roles.label" default="Roles" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="roles" name="roles.id" from="${gdoc.Role.list()}" optionKey="id" required="" value="${userInstance?.roles?.id}" class="many-to-one"/>
+	<g:select name="roles" from="${userInstance.constraints.roles.inList}" required="" value="${userInstance?.roles}" valueMessagePrefix="user.roles"/>
 </div>
 

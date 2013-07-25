@@ -3,9 +3,20 @@ package gdoc
 import org.springframework.dao.DataIntegrityViolationException
 
 class DocController {
+	
+	def beforeInterceptor = [action:this.&auth]
+	def auth() {
+		if(!session.user) {
+			flash.message = "登录后才能操作！"
+			redirect(controller:"User", action:"login")
+			return false
+		}
+	}
+
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+	
+	
     def index() {
         redirect(action: "list", params: params)
     }
@@ -15,9 +26,17 @@ class DocController {
         [docInstanceList: Doc.list(params), docInstanceTotal: Doc.count()]
     }
 
-    def create() {
-        [docInstance: new Doc(params)]
-		
+   def create() {
+    [docInstance: new Doc(params)]
+		if(session.user){
+			docInstance.orgs=session.user.orgs
+			docInstance.depts=session.user.depts
+			docInstance.username=session.user.username
+			docInstance.roles=session.user.roles
+			docInstance.fileName= "此内容由系统自动生成"
+		}
+		[docInstance: docInstance]	
+ 
     }
 
     def save() {

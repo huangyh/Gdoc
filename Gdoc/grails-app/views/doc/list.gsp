@@ -26,15 +26,15 @@
 					
 						<g:sortableColumn property="name" title="${message(code: 'doc.name.label', default: 'Name')}" />
 					
-						<g:sortableColumn property="description" title="${message(code: 'doc.description.label', default: 'Description')}" />
+						<g:sortableColumn property="categorys" title="${message(code: 'doc.categorys.label', default: 'Categorys')}" />
 					
-						<g:sortableColumn property="orgs" title="${message(code: 'doc.orgs.label', default: 'Orgs')}" />
+						<g:sortableColumn property="share" title="${message(code: 'doc.share.label', default: 'Share')}" />
 					
-						<g:sortableColumn property="depts" title="${message(code: 'doc.depts.label', default: 'Depts')}" />
+						<g:sortableColumn property="fileName" title="${message(code: 'doc.fileName.label', default: 'File Name')}" />
 					
-						<g:sortableColumn property="username" title="${message(code: 'doc.username.label', default: 'Username')}" />
+						<g:sortableColumn property="filedata" title="${message(code: 'doc.filedata.label', default: 'Filedata')}" />
 					
-						<g:sortableColumn property="roles" title="${message(code: 'doc.roles.label', default: 'Roles')}" />
+						<g:sortableColumn property="dateCreated" title="${message(code: 'doc.dateCreated.label', default: 'Date Created')}" />
 					
 					</tr>
 				</thead>
@@ -44,15 +44,15 @@
 					
 						<td><g:link action="show" id="${docInstance.id}">${fieldValue(bean: docInstance, field: "name")}</g:link></td>
 					
-						<td>${fieldValue(bean: docInstance, field: "description")}</td>
+						<td>${fieldValue(bean: docInstance, field: "categorys")}</td>
 					
-						<td>${fieldValue(bean: docInstance, field: "orgs")}</td>
+						<td>${fieldValue(bean: docInstance, field: "share")}</td>
 					
-						<td>${fieldValue(bean: docInstance, field: "depts")}</td>
+						<td>${fieldValue(bean: docInstance, field: "fileName")}</td>
 					
-						<td>${fieldValue(bean: docInstance, field: "username")}</td>
+						<td>${fieldValue(bean: docInstance, field: "filedata")}</td>
 					
-						<td>${fieldValue(bean: docInstance, field: "roles")}</td>
+						<td><g:formatDate date="${docInstance.dateCreated}" /></td>
 					
 					</tr>
 				</g:each>

@@ -1,0 +1,5 @@
+package gdoc
+
+class LoginTagLib {
+
+}

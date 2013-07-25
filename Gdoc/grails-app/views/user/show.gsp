@@ -90,7 +90,7 @@
 				<li class="fieldcontain">
 					<span id="roles-label" class="property-label"><g:message code="user.roles.label" default="Roles" /></span>
 					
-						<span class="property-value" aria-labelledby="roles-label"><g:link controller="role" action="show" id="${userInstance?.roles?.id}">${userInstance?.roles?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="roles-label"><g:fieldValue bean="${userInstance}" field="roles"/></span>
 					
 				</li>
 				</g:if>
