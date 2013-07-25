@@ -33,7 +33,7 @@
 			alt="Grails" /></a>
 	<g:if test="${session.user}">	
 		<div id="main_login"  role="status">
-		欢迎！ [ ${session.user.roles} ] ${session.user.username}
+		  ${session.user.orgs}  ${session.user.depts}  ${session.user.username}
 		<g:link controller="user" action="logout">[ 退出  ]</g:link>
 		</div>
 	</g:if>	

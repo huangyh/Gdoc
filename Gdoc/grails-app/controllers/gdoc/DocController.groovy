@@ -27,19 +27,19 @@ class DocController {
     }
 
    def create() {
-    [docInstance: new Doc(params)]
-		if(session.user){
-			docInstance.orgs=session.user.orgs
-			docInstance.depts=session.user.depts
-			docInstance.username=session.user.username
-			docInstance.roles=session.user.roles
+	   def docInstance = new Doc(params)   
+	   if(session.user){
+			docInstance.orgs = session.user.orgs
+			docInstance.depts = session.user.depts
+			docInstance.username = session.user.username
+			docInstance.roles = session.user.roles
 			docInstance.fileName= "此内容由系统自动生成"
 		}
 		[docInstance: docInstance]	
  
     }
 
-    def save() {
+    /*def save() {
         def docInstance = new Doc(params)
         if (!docInstance.save(flush: true)) {
             render(view: "create", model: [docInstance: docInstance])
@@ -49,7 +49,75 @@ class DocController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'doc.label', default: 'Doc'), docInstance.id])
         redirect(action: "show", id: docInstance.id)
     }
+*/
+   
+   def save = {
+	   def docInstance = new Doc(params)
+	   
+	   
+   
+	   //handle uploaded file
+	   def uploadedFile = request.getFile('filedata')
+	   
+	   if( uploadedFile.size>1000000){
+		   flash.message = "上传的文件太大！"
+		   redirect(controller:"doc", action:"create")
+		   return false
+	   }
+	   
+	   if(!uploadedFile.empty){
+		   println "Class: ${uploadedFile.class}"
+		   println "Name: ${uploadedFile.name}"
+		   println "OriginalFileName: ${uploadedFile.originalFilename}"
+		   println "Size: ${uploadedFile.size}"
+		   println "ContentType: ${uploadedFile.contentType}"
+		   
+		   
 
+		   def webRootDir = servletContext.getRealPath("/")
+		   def userDir = new File(webRootDir, "/upload")
+		   userDir.mkdirs()
+		   uploadedFile.transferTo( new File( userDir, uploadedFile.originalFilename))
+		   docInstance.fileName = uploadedFile.originalFilename
+	   }
+
+	   if(!docInstance.hasErrors() && docInstance.save()) {
+		   flash.message = "Doc ${docInstance.id} created"
+		   redirect(action:"show",id:docInstance.id)
+	   }
+	   else {
+		   render(view:'create',model:[entryInstance:docInstance])
+	   }
+   }
+
+   
+   /**
+	* 文件下载
+	*/
+    def download(Long id) {
+		def docInstance = Doc.get(id)
+		def webRootDir = servletContext.getRealPath("/")
+		
+		def fileName = docInstance.fileName  //文件名	
+		def filePath = new File(webRootDir, "/upload"+"/"+fileName) //文件路径
+		response.setHeader("Content-disposition", "attachment; filename=$fileName")
+		def out = response.outputStream
+		println filePath
+		def inputStream = new FileInputStream(filePath)
+		byte[] buffer = new byte[1024]
+		int i = -1
+		while ((i = inputStream.read(buffer)) != -1) {
+			out.write(buffer, 0, i)
+		}
+		out.flush()
+		out.close()
+		inputStream.close()
+	}
+
+  
+   
+
+   
     def show(Long id) {
         def docInstance = Doc.get(id)
         if (!docInstance) {
@@ -68,6 +136,12 @@ class DocController {
             redirect(action: "list")
             return
         }
+		if (docInstance.username != session.user.username && docInstance.username != "管理员"){
+			flash.message = "只有本人和管理员才能修改文档！"
+			redirect(action:"list")
+			return
+			
+		}
 
         [docInstance: docInstance]
     }
@@ -79,6 +153,8 @@ class DocController {
             redirect(action: "list")
             return
         }
+		
+		
 
         if (version != null) {
             if (docInstance.version > version) {
@@ -108,6 +184,13 @@ class DocController {
             redirect(action: "list")
             return
         }
+		
+		if (docInstance.username != session.user.username && docInstance.username != "管理员"){
+			flash.message = "只有本人和管理员才能删除文档！"
+			redirect(action:"list")
+			return
+			
+		}
 
         try {
             docInstance.delete(flush: true)

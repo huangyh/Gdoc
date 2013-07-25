@@ -19,7 +19,11 @@ class User {
 		"${username}"
 	}
 	
-
+	static mapping = {
+		orgs lazy:false
+		depts lazy:false
+	}
+	
     static constraints = {
 		userId(blank:false,unique:true)
 		username(blank:false)

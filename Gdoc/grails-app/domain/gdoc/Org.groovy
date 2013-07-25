@@ -11,6 +11,7 @@ class Org {
 	}
 	 
 	static hasMany = [depts:Dept]
+	
 
     static constraints = {
 		name(blank:false)
