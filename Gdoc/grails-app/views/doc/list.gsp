@@ -24,6 +24,7 @@
 			</g:if>
 			<g:render template="listAll"></g:render>
 			
+</div>  
 		</div>
 	</body>
 </html>
