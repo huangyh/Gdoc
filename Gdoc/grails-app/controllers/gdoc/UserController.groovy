@@ -3,6 +3,25 @@ package gdoc
 import org.springframework.dao.DataIntegrityViolationException
 
 class UserController {
+	
+	def beforeInterceptor = [action:this.&auth,except:['login', 'logout', 'authenticate']]
+	
+	def auth() {
+		if(!session.user) {
+			flash.message = "登录后才能操作！"
+			redirect(controller:"User", action:"login")
+			return false
+		}
+		
+		if(session.user.roles != "管理员"){
+			flash.message = "管理员才能操作！"
+			redirect(controller:"User", action:"login")
+			return false		
+		}
+	
+	}
+	
+	
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -22,19 +41,27 @@ class UserController {
 		def user = User.findByUserIdAndPassword(params.userId, params.password)
 		if(user){
 		session.user = user
-		flash.message = "您好！ ${user.username}!"
+		flash.message = "您好！ ${user.username}"
 		if (user.admin){
 		redirect(controller:"user",action:"list")
 		}else{
-		redirect(controller:"doc", action:"list")
+		redirect(controller:"doc", action:"usernameList")
 		}
 		}else{
 		flash.message = "对不起, ${params.userId}. 请再试一次。"
 		redirect(action:"login")
 		}
 	}
+	
+	def listByOrg = {
+		assert null != params.id
+		   params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
+		   render g.select(optionKey:"id", from:Dept.findAllByOrgs( Org.get(params.id), params), name:"depts.id")
+	   }
+
 
     def list(Integer max) {
+		
         params.max = Math.min(max ?: 10, 100)
         [userInstanceList: User.list(params), userInstanceTotal: User.count()]
     }
@@ -67,6 +94,11 @@ class UserController {
 
     def edit(Long id) {
         def userInstance = User.get(id)
+		if (userInstance.username != session.user.username && userInstance.roles != "管理员"){
+			flash.message = "只有本人或管理员才能修改文档！"
+			redirect(action: "list")
+			return
+		}
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
             redirect(action: "list")
@@ -107,6 +139,11 @@ class UserController {
 
     def delete(Long id) {
         def userInstance = User.get(id)
+		if (userInstance.username != session.user.username && userInstance.username != "管理员"){
+			flash.message = "只有本人或管理员才能修改文档！"
+			redirect(action: "list")
+			return
+		}
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
             redirect(action: "list")

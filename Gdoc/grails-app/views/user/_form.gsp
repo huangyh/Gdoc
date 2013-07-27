@@ -47,7 +47,8 @@
 		<g:message code="user.orgs.label" default="Orgs" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="orgs" name="orgs.id" from="${gdoc.Org.list()}" optionKey="id" required="" value="${userInstance?.orgs?.id}" class="many-to-one"/>
+	<g:select id="orgs" name="orgs.id" from="${gdoc.Org.list()}" optionKey="id" required="" value="${userInstance?.orgs?.id}" class="many-to-one"
+	onchange="${remoteFunction(controller:'User', action:'listByOrg', params:'\'id=\'+this.value', update:'depts')}"></g:select>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'depts', 'error')} required">

@@ -12,6 +12,19 @@ class DocController {
 			return false
 		}
 	}
+	
+	static navigation = [
+		[group:'tabs1',
+		action:'create', title: '新建文档', order: 0],
+		[action:'list', title: '全部文档', order: 1],
+		[action:'usernameList', title: '本人上传', order: 2],
+		[action:'privateList', title: '私有', order: 3],
+		[action: 'deptsList', title: '本部门', order: 4],
+		[action: 'orgsList', title: '本单位', order: 5],
+		[action: 'publicList', title: '本系统', order: 6]
+		
+	
+		]
 
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -22,10 +35,85 @@ class DocController {
     }
 
     def list(Integer max) {
+	
+		if (session.user.roles != "管理员"){
+			flash.message = "只有管理员才能查看全部文档！"
+			redirect(action: "usernameList")
+			return
+		}
         params.max = Math.min(max ?: 10, 100)
-        [docInstanceList: Doc.list(params), docInstanceTotal: Doc.count()]
-    }
+		[docInstanceList: Doc.list(params), docInstanceTotal: Doc.count()]
+	
+	 }
+	
+	def usernameList(Integer max){
+		
+		params.max = Math.min(max ?: 10, 100)
+		def criteria = Doc.createCriteria()
 
+		def deptsl = criteria.list(max:params.max){
+			eq("username","${session.user.username}")
+			eq("orgs","${session.user.orgs}")
+			
+			}
+		render (view:'list', model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
+	}
+	
+	def privateList(Integer max){
+		
+		params.max = Math.min(max ?: 10, 100)
+		def criteria = Doc.createCriteria()
+
+		def deptsl = criteria.list(max:params.max){
+			eq("username","${session.user.username}")
+			eq("orgs","${session.user.orgs}")
+			eq("share","私有")
+			
+			}
+		render (view:'list', model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
+	}
+	
+	def deptsList(Integer max){
+		
+		params.max = Math.min(max ?: 10, 100)
+		def criteria = Doc.createCriteria()
+
+		def deptsl = criteria.list(max:params.max){
+			eq("depts","${session.user.depts}")
+			eq("orgs","${session.user.orgs}")
+			eq("share","本部门")
+			
+			}
+		render (view:'list',model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
+	}
+
+	def orgsList(Integer max){
+		
+		params.max = Math.min(max ?: 10, 100)
+		def criteria = Doc.createCriteria()
+
+		def deptsl = criteria.list(max:params.max){
+			eq("orgs","${session.user.orgs}")
+			eq("share","本单位")
+			
+			}
+		render (view:'list',model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
+	}
+
+	
+	def publicList(Integer max){
+		
+		params.max = Math.min(max ?: 10, 100)
+		def criteria = Doc.createCriteria()
+
+		def deptsl = criteria.list(max:params.max){
+			eq("share","本系统")
+			
+			}
+		render (view:'list',model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
+	}
+
+	
    def create() {
 	   def docInstance = new Doc(params)   
 	   if(session.user){
@@ -59,7 +147,7 @@ class DocController {
 	   //handle uploaded file
 	   def uploadedFile = request.getFile('filedata')
 	   
-	   if( uploadedFile.size>1000000){
+	   if( uploadedFile.size>5000000){
 		   flash.message = "上传的文件太大！"
 		   redirect(controller:"doc", action:"create")
 		   return false
