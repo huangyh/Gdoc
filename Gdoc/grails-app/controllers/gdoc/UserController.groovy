@@ -4,7 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class UserController {
 	
-	def beforeInterceptor = [action:this.&auth,except:['login', 'logout', 'authenticate']]
+	def beforeInterceptor = [action:this.&auth,except:['login', 'logout', 'authenticate','rePassword']]
 	
 	def auth() {
 		if(!session.user) {
@@ -21,7 +21,7 @@ class UserController {
 	
 	}
 	
-	
+
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -53,6 +53,32 @@ class UserController {
 		}
 	}
 	
+	def rePassword = {
+		if (!session.user){
+			flash.message = "没有登录不可以修改密码！"
+			redirect(controller:"user",action:"login")
+			return false
+			}
+		
+		if (session.user.userId != params.userId || session.user.password != params.password){
+			flash.message = "请输入正确的登录名和密码。"
+			return false
+		}
+		if (params.newpassword != params.agpassword){
+			flash.message = " 两次输入的密码不相同，请重新输入。"
+			return false		
+		}
+		def user = User.findByUserIdAndPassword(params.userId, params.password)
+		if(user){
+		user.password = params.newpassword
+		user.save()
+		session.user = null
+		flash.message = "密码已成功修改，请用新密码重新登陆。"
+		redirect(controller:"user", action:"login")
+		}
+	}	
+	
+
 	def listByOrg = {
 		assert null != params.id
 		   params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
