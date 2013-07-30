@@ -10,7 +10,6 @@
 		<a href="#edit-doc" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
@@ -31,7 +30,7 @@
 				<g:hiddenField name="id" value="${docInstance?.id}" />
 				<g:hiddenField name="version" value="${docInstance?.version}" />
 				<fieldset class="form">
-					<g:render template="form"/>
+					<g:render template="edit_form"/>
 				</fieldset>
 				<fieldset class="buttons">
 					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />

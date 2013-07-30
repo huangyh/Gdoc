@@ -10,8 +10,7 @@
 <title><g:message code="default.login.label" args="[entityName]" /></title>
 </head>
 <body>
-
-	<div id="login" class="content scaffold-create" role="main">
+	<div id="login" class="content scaffold-create" role="main" >
 		<h1>
 			<g:message code="default.login.label" args="[entityName]" />
 		</h1>
@@ -38,7 +37,7 @@
 				</div>
 
 			</fieldset>
-			<fieldset class="buttons">
+			<fieldset class="buttons" >
 				<g:submitButton name="create" class="save"
 					value="${message(code: 'default.button.login.label', default: 'login')}" />
 			</fieldset>

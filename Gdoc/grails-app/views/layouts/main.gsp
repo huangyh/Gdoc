@@ -44,8 +44,8 @@
 			<g:message code="spinner.alt" default="Loading&hellip;" />	
 		</div>
 	</div>
-	<div data-options="region:'west',title:'功能导航',split:true"
-		style="width: 160px;">
+	<div data-options="region:'west',title:'功能导航',split:false"
+		style="width: 200px;" >
 		<div class="easyui-accordion" border = "false">  
     <div title="系统简介" iconCls="icon-ok" style="overflow:auto;padding:10px;">  
         <h3 style="color:#0099FF;">Grails & jQuery-easyui</h3>  

@@ -127,17 +127,7 @@ class DocController {
  
     }
 
-    /*def save() {
-        def docInstance = new Doc(params)
-        if (!docInstance.save(flush: true)) {
-            render(view: "create", model: [docInstance: docInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'doc.label', default: 'Doc'), docInstance.id])
-        redirect(action: "show", id: docInstance.id)
-    }
-*/
+ 
    
    def save = {
 	   def docInstance = new Doc(params)
@@ -154,19 +144,20 @@ class DocController {
 	   }
 	   
 	   if(!uploadedFile.empty){
-		   println "Class: ${uploadedFile.class}"
-		   println "Name: ${uploadedFile.name}"
-		   println "OriginalFileName: ${uploadedFile.originalFilename}"
-		   println "Size: ${uploadedFile.size}"
-		   println "ContentType: ${uploadedFile.contentType}"
 		   
-		   
-
 		   def webRootDir = servletContext.getRealPath("/")
 		   def userDir = new File(webRootDir, "/upload")
 		   userDir.mkdirs()
-		   uploadedFile.transferTo( new File( userDir, uploadedFile.originalFilename))
 		   docInstance.fileName = uploadedFile.originalFilename
+		   def filePath =  new File(webRootDir, "/upload"+"/"+docInstance.fileName) //文件路径
+		   if (filePath){
+			  docInstance.fileName ="(复件)" +docInstance.fileName
+			   
+		   }
+		 
+		   uploadedFile.transferTo( new File( userDir, docInstance.fileName))
+		   
+		   
 	   }
 
 	   if(!docInstance.hasErrors() && docInstance.save()) {
@@ -186,11 +177,10 @@ class DocController {
 		def docInstance = Doc.get(id)
 		def webRootDir = servletContext.getRealPath("/")
 		
-		def fileName = docInstance.fileName  //文件名	
+		def fileName = docInstance.fileName //文件名	
 		def filePath = new File(webRootDir, "/upload"+"/"+fileName) //文件路径
-		response.setHeader("Content-disposition", "attachment; filename=$fileName")
+		response.setHeader("Content-disposition", "attachment; filename="+ new String(fileName.getBytes("UTF-8"),"ISO8859-1"))
 		def out = response.outputStream
-		println filePath
 		def inputStream = new FileInputStream(filePath)
 		byte[] buffer = new byte[1024]
 		int i = -1
@@ -210,7 +200,7 @@ class DocController {
         def docInstance = Doc.get(id)
         if (!docInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'doc.label', default: 'Doc'), id])
-            redirect(action: "list")
+            redirect(action: "usernameList")
             return
         }
 
@@ -221,12 +211,12 @@ class DocController {
         def docInstance = Doc.get(id)
         if (!docInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'doc.label', default: 'Doc'), id])
-            redirect(action: "list")
+            redirect(action: "usernameList")
             return
         }
 		if (docInstance.username != session.user.username && docInstance.username != "管理员"){
 			flash.message = "只有本人和管理员才能修改文档！"
-			redirect(action:"list")
+			redirect(action:"usernameList")
 			return
 			
 		}
@@ -238,7 +228,7 @@ class DocController {
         def docInstance = Doc.get(id)
         if (!docInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'doc.label', default: 'Doc'), id])
-            redirect(action: "list")
+            redirect(action: "usernameList")
             return
         }
 		
@@ -269,13 +259,13 @@ class DocController {
         def docInstance = Doc.get(id)
         if (!docInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'doc.label', default: 'Doc'), id])
-            redirect(action: "list")
+            redirect(action: "usernameList")
             return
         }
 		
 		if (docInstance.username != session.user.username && docInstance.username != "管理员"){
 			flash.message = "只有本人和管理员才能删除文档！"
-			redirect(action:"list")
+			redirect(action:"usenameList")
 			return
 			
 		}
@@ -283,7 +273,16 @@ class DocController {
         try {
             docInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'doc.label', default: 'Doc'), id])
-            redirect(action: "list")
+          
+			
+			def webRootDir = servletContext.getRealPath("/")		
+			def fileName = docInstance.fileName //文件名
+			def filePath = new File(webRootDir, "/upload"+"/"+fileName) //文件路径
+			if(filePath){
+				filePath.delete()
+			}
+			redirect(action: "usernameList")
+			
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'doc.label', default: 'Doc'), id])
