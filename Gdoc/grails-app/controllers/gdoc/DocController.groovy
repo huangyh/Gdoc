@@ -15,7 +15,7 @@ class DocController {
 	
 	static navigation = [
 		[group:'tabs1',
-		action:'create', title: '新建文档', order: 0],
+		action:'create', title: '上传文档', order: 0],
 		[action:'list', title: '全部文档', order: 1],
 		[action:'usernameList', title: '本人上传', order: 2],
 		[action:'privateList', title: '私有', order: 3],
@@ -54,9 +54,10 @@ class DocController {
 		def deptsl = criteria.list(max:params.max){
 			eq("username","${session.user.username}")
 			eq("orgs","${session.user.orgs}")
-			
+			order("dateCreated","desc")
 			}
 		render (view:'list', model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
+		
 	}
 	
 	def privateList(Integer max){
@@ -68,7 +69,7 @@ class DocController {
 			eq("username","${session.user.username}")
 			eq("orgs","${session.user.orgs}")
 			eq("share","私有")
-			
+			order("dateCreated","desc")
 			}
 		render (view:'list', model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
 	}
@@ -82,7 +83,7 @@ class DocController {
 			eq("depts","${session.user.depts}")
 			eq("orgs","${session.user.orgs}")
 			eq("share","本部门")
-			
+			order("dateCreated","desc")
 			}
 		render (view:'list',model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
 	}
@@ -95,7 +96,7 @@ class DocController {
 		def deptsl = criteria.list(max:params.max){
 			eq("orgs","${session.user.orgs}")
 			eq("share","本单位")
-			
+			order("dateCreated","desc")
 			}
 		render (view:'list',model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
 	}
@@ -108,14 +109,15 @@ class DocController {
 
 		def deptsl = criteria.list(max:params.max){
 			eq("share","本系统")
-			
+			order("dateCreated","desc")
 			}
 		render (view:'list',model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
 	}
 
 	
    def create() {
-	   def docInstance = new Doc(params)   
+	   def docInstance = new Doc(params)  
+	  
 	   if(session.user){
 			docInstance.orgs = session.user.orgs
 			docInstance.depts = session.user.depts
@@ -150,9 +152,11 @@ class DocController {
 		   userDir.mkdirs()
 		   docInstance.fileName = uploadedFile.originalFilename
 		   def filePath =  new File(webRootDir, "/upload"+"/"+docInstance.fileName) //文件路径
-		   if (filePath){
-			  docInstance.fileName ="(复件)" +docInstance.fileName
+		   while(filePath.exists()){
 			   
+				   docInstance.fileName ="(复件)" +docInstance.fileName  
+				   filePath =  new File(webRootDir, "/upload"+"/"+docInstance.fileName)
+			
 		   }
 		 
 		   uploadedFile.transferTo( new File( userDir, docInstance.fileName))

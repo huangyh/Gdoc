@@ -57,18 +57,18 @@
     </div>  
     
     <div title="系统管理"  >  
-        <ul id="tt1" class="easyui-tree">  
-           <li><span>机构管理</span></li>  
- 	       <li><span>部门管理</span></li>  
-           <li><span>用户管理</span></li>
-           <li><span>角色管理</span></li> 
-           <li><span>文档类型管理</span></li>     
+        <ul id="tt1" class="easyui-tree"> 
+        	 <li><g:link controller="org" action="list"><span>机构管理</span></g:link></li> 
+        	 <li><g:link controller="dept" action="list"><span>部门管理</span></g:link></li> 
+        	 <li><g:link controller="user" action="list"><span>用户管理</span></g:link></li> 
+        	 <li><g:link controller="role" action="list"><span>角色管理</span></g:link></li> 
+        	 <li><g:link controller="category" action="list"><span>文档类型管理</span></g:link></li>      
          </ul>  
     </div>  
     <div title="文档管理"  selected="true">  
         <ul id="tt2" class="easyui-tree">  
          	 <li><g:link controller="doc" action="usernameList"><span>管理文档</span></g:link></li> 
- 	        <li><span>搜索文档</span></li>  
+ 	         <li><g:link controller="search" action="search"><span>搜索文档</span></g:link></li>  
             <li><g:link controller="user" action="rePassword"><span>修改密码</span></g:link></li>                       
           
              

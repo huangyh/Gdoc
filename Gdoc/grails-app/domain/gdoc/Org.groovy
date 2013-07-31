@@ -15,8 +15,8 @@ class Org {
 
     static constraints = {
 		name(blank:false)
-		address()
-		zip()
-		code()
+		address(nullable:true)
+		zip(nullable:true)
+		code(nullable:true)
     }
 }

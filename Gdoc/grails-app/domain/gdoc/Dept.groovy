@@ -12,6 +12,6 @@ class Dept {
 
     static constraints = {
 		name(blank:false)
-		description()
+		description(nullable:true)
     }
 }

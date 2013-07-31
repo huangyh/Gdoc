@@ -3,6 +3,23 @@ package gdoc
 import org.springframework.dao.DataIntegrityViolationException
 
 class DeptController {
+	
+	def beforeInterceptor = [action:this.&auth,except:['login', 'logout', 'authenticate','rePassword']]
+	
+	def auth() {
+		if(!session.user) {
+			flash.message = "登录后才能操作！"
+			redirect(controller:"User", action:"login")
+			return false
+		}
+		
+		if(session.user.roles != "管理员"){
+			flash.message = "管理员才能操作！"
+			redirect(controller:"User", action:"login")
+			return false
+		}
+	
+	}
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 

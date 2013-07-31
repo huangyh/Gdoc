@@ -29,9 +29,9 @@ class User {
 		username(blank:false)
 		password(blank:false,password:true)
 		email(blank:false,email:true)
-		phone()
-		orgs()
-		depts()
+		phone(nullable:true)
+		orgs(blank:false)
+		depts(blank:false)
 		roles(inList:["管理员","直属企业员工","直属企业中层","直属企业领导","分公司员工","分公司中层","分公司领导"],blank:false)
 		
     }
