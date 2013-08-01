@@ -120,11 +120,7 @@ class UserController {
 
     def edit(Long id) {
         def userInstance = User.get(id)
-		if (userInstance.username != session.user.username && userInstance.roles != "管理员"){
-			flash.message = "只有本人或管理员才能修改文档！"
-			redirect(action: "list")
-			return
-		}
+		
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
             redirect(action: "list")
@@ -165,11 +161,7 @@ class UserController {
 
     def delete(Long id) {
         def userInstance = User.get(id)
-		if (userInstance.username != session.user.username && userInstance.username != "管理员"){
-			flash.message = "只有本人或管理员才能修改文档！"
-			redirect(action: "list")
-			return
-		}
+		
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), id])
             redirect(action: "list")

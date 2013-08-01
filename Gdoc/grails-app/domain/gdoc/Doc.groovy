@@ -25,7 +25,7 @@ class Doc {
     static constraints = {
 	    name(blank:false)
 		categorys(inList:["总公司发文","分公司发文","分公司收文","直属企业发文","业务","财务","综合","人事党群","纪检监察","其他"],blank:false)
-		share(inList:["私有","本部门 ","本单位","本系统"],blank:false)
+		share(inList:["私有","本部门","本单位","本系统"],blank:false)
 		fileName()
 		filedata()
 		dateCreated()
