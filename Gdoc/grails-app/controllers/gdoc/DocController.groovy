@@ -41,8 +41,13 @@ class DocController {
 			redirect(action: "usernameList")
 			return
 		}
-        params.max = Math.min(max ?: 10, 100)
-		[docInstanceList: Doc.list(params), docInstanceTotal: Doc.count()]
+       params.max = Math.min(max ?: 10, 100)
+		def criteria = Doc.createCriteria()
+
+		def deptsl = criteria.list(max:params.max){
+			order("dateCreated","desc")
+			}
+		render (view:'list', model:[docInstanceList:deptsl, docInstanceTotal: deptsl.getTotalCount()])
 	
 	 }
 	
