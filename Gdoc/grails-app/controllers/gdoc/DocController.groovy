@@ -119,6 +119,8 @@ class DocController {
 	   def docInstance = new Doc(params)  
 	  
 	   if(session.user){
+		   	def date = new Date().format("yyyyMMddhhmmss").toString()
+		    docInstance.name = "${session.user.userId}" + "${date}"
 			docInstance.orgs = session.user.orgs
 			docInstance.depts = session.user.depts
 			docInstance.username = session.user.username
@@ -134,8 +136,6 @@ class DocController {
    def save = {
 	   def docInstance = new Doc(params)
 	   
-	   
-   
 	   //handle uploaded file
 	   def uploadedFile = request.getFile('filedata')
 	   
@@ -282,7 +282,7 @@ class DocController {
 			def webRootDir = servletContext.getRealPath("/")		
 			def fileName = docInstance.fileName //文件名
 			def filePath = new File(webRootDir, "/upload"+"/"+fileName) //文件路径
-			if(filePath){
+			if(filePath.exists()){
 				filePath.delete()
 			}
 			redirect(action: "usernameList")
